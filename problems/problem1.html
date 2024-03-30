@@ -34,22 +34,13 @@
         z: 0
     };
 
-    let actions = {
-    reset_matrix: function() {
-            settings.x = 0;
-            settings.y = 0;
-            settings.z = 0;
-            refresh_displays(gui);
-        }
-    };
-
     let gui = get_default_lil_gui();
     gui.add(settings, 'x', -2.00, 2.00).name('X-Coordinate');
     gui.add(settings, 'y', -2.00, 2.00).name('Y-Coordinate');
     gui.add(settings, 'z', -2.00, 2.00).name('Z-Coordinate');
 
     engine.animation_loop(() => {
-        engine.draw_debug_sphere([settings.x,settings.y,settings.z], 0.03, 0x00ff00, 0.6);
+        engine.draw_debug_sphere([settings.x,settings.y,settings.z], 0.04, 0x00ffff, 0.7);
     });
 
 </script>
