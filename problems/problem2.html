@@ -34,18 +34,11 @@
         time: 0.0
     };
 
-    let actions = {
-    update_time: function() {
-            settings.time += 0.0167;
-            refresh_displays(gui);
-        }
-    };
-
     let gui = get_default_lil_gui();
     gui.add(settings, 'time').name('Time Elapsed');
 
     engine.animation_loop(() => {
-        settings.time += 0.0167;
+        settings.time = engine.get_time_elapsed();
         refresh_displays(gui);
     });
 
