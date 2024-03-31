@@ -102,8 +102,8 @@
             engine.mesh_objects[0].visible = false;
         }
 
-        enginge.draw_debug_vector([0,0], [Math.cos(settings.theta), Math.sin(settings.theta)], 0.05, 0, 0xff0000);
-        enginge.draw_debug_vector([0,0], [-Math.sin(settings.theta), Math.cos(settings.theta)], 0.05, 0, 0xff0000);
+        engine.draw_debug_vector([0,0], [Math.cos(settings.theta), Math.sin(settings.theta)], 0.05, 0, 0xff0000);
+        engine.draw_debug_vector([0,0], [-Math.sin(settings.theta), Math.cos(settings.theta)], 0.05, 0, 0xff0000);
 
         let det = Math.cos(settings.theta)*Math.cos(settings.theta) + Math.sin(settings.theta)*Math.sin(settings.theta);
         settings.determinant = det;
