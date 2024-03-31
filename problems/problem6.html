@@ -97,19 +97,9 @@
         let a2 = multiplier*p*(m_t1[0][0]) + multiplier*q*(m_t1[1][0]);
         let a3 = -multiplier*q*(m_t1[0][0]) + multiplier*p*(m_t1[1][0]);
 
-        console.log('P:');
-        console.log(p);
-        console.log('Q:');
-        console.log(q);
-        console.log('a1:');
-        console.log(a1);
-        console.log('a2:');
-        console.log(a2);
-        console.log('a3:');
-        console.log(a3);
-
         let norm = Math.sqrt(Math.pow(a1, 2) + Math.pow(a2, 2) + Math.pow(a3, 2));
 
+        return norm;
     }
 
     engine.animation_loop(function() {
@@ -120,8 +110,8 @@
         let t2 = [[settings.tx2], [settings.ty2]];
 
         settings.dis = dis(so2_1, t1, so2_2, t2);
-        console.log(settings.dis);
-        //refresh_displays(gui);
+        //console.log(settings.dis);
+        refresh_displays(gui);
 
         engine.draw_debug_vector([settings.tx1,settings.ty1], [Math.cos(settings.theta1)+settings.tx1, Math.sin(settings.theta1)+settings.ty1], 0.03, 0, 0xff0000);
         engine.draw_debug_vector([settings.tx1,settings.ty1], [-Math.sin(settings.theta1)+settings.tx1, Math.cos(settings.theta1)+settings.ty1], 0.03, 0, 0x00ff00);
