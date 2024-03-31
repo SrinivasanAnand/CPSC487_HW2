@@ -84,7 +84,7 @@
         let so2 = [[Math.cos(settings.theta), -Math.sin(settings.theta)], [Math.sin(settings.theta), Math.cos(settings.theta)]];
 
         let new_points = points.map(point => se2_transformation(so2, [settings.t_x, settings.t_y], point));
-        let new_wireframe = wireframe.map(point => se2_transfromation(so2, [settings.t_x, settings.t_y], point));
+        let new_wireframe = wireframe.map(point => se2_transformation(so2, [settings.t_x, settings.t_y], point));
 
         engine.update_vertex_positions_of_mesh_object(0, new_points);
         engine.update_vertex_positions_of_mesh_object_wireframe(0, new_wireframe);
@@ -112,9 +112,6 @@
         engine.draw_debug_vector([0,0], [Math.cos(settings.theta), Math.sin(settings.theta)], 0.05, 0, 0xff0000);
         engine.draw_debug_vector([0,0], [-Math.sin(settings.theta), Math.cos(settings.theta)], 0.05, 0, 0x00ff00);
 
-        let det = Math.cos(settings.theta)*Math.cos(settings.theta) + Math.sin(settings.theta)*Math.sin(settings.theta);
-        settings.determinant = det;
-        refresh_displays(gui);
     });
     
 
