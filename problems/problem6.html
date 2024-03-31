@@ -78,7 +78,7 @@
         let disp_so2 = mul_matrix_matrix(m_transpose, so2_2);
         let disp_t = mul_matrix_matrix(m_transpose, t2);
         disp_t[0][0] += m_t1[0][0];
-        disp_t[1][1] += m_t1[1][1];
+        disp_t[1][0] += m_t1[1][0];
 
         let a1 = Math.atan2(disp_so2[1][0], disp_so2[0][0]);
 
