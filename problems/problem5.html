@@ -20,12 +20,103 @@
 </head>
 <body>
 <script type="module">
-    import {ThreeEngine} from "../js/utils/utils_three.js";
+    import {get_default_lil_gui, ThreeEngine, refresh_displays} from "../js/utils/utils_three.js";
 
     // todo: recreate this visualization, demonstrating your understanding of SE(2)
     // todo: https://yale-cpsc-487-587-internal-djrakita-c95fa6c3239a481a48d29a6b0fd.gitlab.io/html/visualizations/point_mapping_2D_direct_isometry.html
     // todo: (no need to draw the unit circle here)
     // todo: or, feel free to come up with any visualization here that demonstrates your understanding of SE(2)
+
+    let engine = ThreeEngine.new_default_2d();
+
+    let suzanne_2d = engine.add_standard2Dshape_as_mesh_object(0x00ffff);
+
+    let settings = {
+        show_points: false,
+        show_wireframe: false,
+        show_mesh: false,
+        point_size: 0.02,
+        t_x: 0,
+        t_y: 0,
+        theta: 0,
+        determinant: 0
+    };
+
+    let actions = {
+        reset: function() {
+            settings.theta = 0;
+            settings.t_x = 0;
+            settings.t_y = 0;
+            refresh_displays(gui);
+        }
+    }
+
+    let gui = get_default_lil_gui();
+    gui.add(settings, 'show_points').name('Points');
+    gui.add(settings, 'show_wireframe').name('Wireframe');
+    gui.add(settings, 'show_mesh').name('Mesh');
+    gui.add(settings, 'point_size', 0.001, 0.03).name('Point Size');
+
+    let folder = gui.addFolder('Matrix Controls');
+    folder.add(settings, 't_x', -2, 2).name('Translation X');
+    folder.add(settings, 't_x', -2, 2).name('Translation Y');
+    folder.add(settings, 'theta', -3.1415, 3.1415).name('Rotation Angle');
+    folder.add(actions, 'reset').name('Reset Theta')
+    gui.add(settings, 'determinant').name('Determinant');
+
+    let points = engine.get_local_vertex_positions_of_mesh_object(0);
+    let wireframe = engine.get_local_vertex_positions_of_mesh_object_wireframe(0);
+    
+    function se2_transformation(so2, translation, point) {
+        let result = [[0.],[0.]];
+        so2.forEach(function(row, index) {
+            let sum = 0;
+            row.forEach(function(value, row_index){
+                sum += value * point[row_index][0]
+            })
+            sum += translation[index];
+            result[index][0] = sum;
+        });
+        return result;
+    }
+
+    engine.animation_loop(function() {
+        let so2 = [[Math.cos(settings.theta), -Math.sin(settings.theta)], [Math.sin(settings.theta), Math.cos(settings.theta)]];
+
+        let new_points = points.map(point => se2_transformation(so2, [settings.t_x, settings.t_y], point));
+        let new_wireframe = wireframe.map(point => se2_transfromation(so2, [settings.t_x, settings.t_y], point));
+
+        engine.update_vertex_positions_of_mesh_object(0, new_points);
+        engine.update_vertex_positions_of_mesh_object_wireframe(0, new_wireframe);
+
+        if (settings.show_points){
+            new_points.forEach(point => {
+                engine.draw_debug_sphere(point, settings.point_size, 0xA52A2A)
+            });
+        }
+        
+        if (settings.show_wireframe){
+            engine.set_mesh_object_wireframe_visibility(0, true);
+        }
+        else {
+            engine.set_mesh_object_wireframe_visibility(0, false);
+        }
+
+        if (settings.show_mesh){
+            engine.mesh_objects[0].visible = true;
+        }
+        else{
+            engine.mesh_objects[0].visible = false;
+        }
+
+        engine.draw_debug_vector([0,0], [Math.cos(settings.theta), Math.sin(settings.theta)], 0.05, 0, 0xff0000);
+        engine.draw_debug_vector([0,0], [-Math.sin(settings.theta), Math.cos(settings.theta)], 0.05, 0, 0x00ff00);
+
+        let det = Math.cos(settings.theta)*Math.cos(settings.theta) + Math.sin(settings.theta)*Math.sin(settings.theta);
+        settings.determinant = det;
+        refresh_displays(gui);
+    });
+    
 
 </script>
 </body>
