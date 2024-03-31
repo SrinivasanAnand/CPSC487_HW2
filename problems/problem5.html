@@ -107,8 +107,8 @@
             engine.mesh_objects[0].visible = false;
         }
 
-        engine.draw_debug_vector([0,0], [Math.cos(settings.theta) + settings.t_x, Math.sin(settings.theta) + settings.t_y], 0.05, 0, 0xff0000);
-        engine.draw_debug_vector([0,0], [-Math.sin(settings.theta) + settings.t_x, Math.cos(settings.theta) + settings.t_y], 0.05, 0, 0x00ff00);
+        engine.draw_debug_vector([settings.t_x,settings.t_y], [Math.cos(settings.theta), Math.sin(settings.theta)], 0.05, 0, 0xff0000);
+        engine.draw_debug_vector([settings.t_x,settings.t_y], [-Math.sin(settings.theta), Math.cos(settings.theta)], 0.05, 0, 0x00ff00);
 
     });
     
