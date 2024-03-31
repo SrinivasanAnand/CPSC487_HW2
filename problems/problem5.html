@@ -39,7 +39,6 @@
         t_x: 0,
         t_y: 0,
         theta: 0,
-        determinant: 0
     };
 
     let actions = {
@@ -59,10 +58,9 @@
 
     let folder = gui.addFolder('Matrix Controls');
     folder.add(settings, 't_x', -2, 2).name('Translation X');
-    folder.add(settings, 't_x', -2, 2).name('Translation Y');
+    folder.add(settings, 't_y', -2, 2).name('Translation Y');
     folder.add(settings, 'theta', -3.1415, 3.1415).name('Rotation Angle');
-    folder.add(actions, 'reset').name('Reset Theta')
-    gui.add(settings, 'determinant').name('Determinant');
+    folder.add(actions, 'reset').name('Reset')
 
     let points = engine.get_local_vertex_positions_of_mesh_object(0);
     let wireframe = engine.get_local_vertex_positions_of_mesh_object_wireframe(0);
@@ -109,8 +107,8 @@
             engine.mesh_objects[0].visible = false;
         }
 
-        engine.draw_debug_vector([0,0], [Math.cos(settings.theta), Math.sin(settings.theta)], 0.05, 0, 0xff0000);
-        engine.draw_debug_vector([0,0], [-Math.sin(settings.theta), Math.cos(settings.theta)], 0.05, 0, 0x00ff00);
+        engine.draw_debug_vector([0,0], [Math.cos(settings.theta) + settings.t_x, Math.sin(settings.theta) + settings.t_y], 0.05, 0, 0xff0000);
+        engine.draw_debug_vector([0,0], [-Math.sin(settings.theta) + settings.t_x, Math.cos(settings.theta) + settings.t_y], 0.05, 0, 0x00ff00);
 
     });
     
