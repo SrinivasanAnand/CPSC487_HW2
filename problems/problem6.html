@@ -56,13 +56,13 @@
     }
 
     let gui = get_default_lil_gui();
-    gui.add(settings, 'theta1').name('Theta1');
-    gui.add(settings, 'tx1').name('tx1');
-    gui.add(settings, 'ty1').name('ty1');
+    gui.add(settings, 'theta1', -6.28, 6.28).name('Theta1');
+    gui.add(settings, 'tx1', -2.0, 2.0).name('tx1');
+    gui.add(settings, 'ty1', -2.0, 2.0).name('ty1');
     gui.add(actions, 'reset1').name('Reset1');
-    gui.add(settings, 'theta2').name('Theta2');
-    gui.add(settings, 'tx2').name('tx2');
-    gui.add(settings, 'ty2').name('ty2');
+    gui.add(settings, 'theta2', -6.28, 6.28).name('Theta2');
+    gui.add(settings, 'tx2', -2.0, 2.0).name('tx2');
+    gui.add(settings, 'ty2', -2.0, 2.0).name('ty2');
     gui.add(actions, 'reset2').name('Reset2');
 
 
@@ -79,17 +79,26 @@
         return result;
     }
 
+    function dis(so2_1, t1, so2_2, t2){
+
+    }
+
     engine.animation_loop(function() {
-        let so2 = [[Math.cos(settings.theta), -Math.sin(settings.theta)], [Math.sin(settings.theta), Math.cos(settings.theta)]];
+        let so2_1 = [[Math.cos(settings.theta1), -Math.sin(settings.theta1)], [Math.sin(settings.theta1), Math.cos(settings.theta1)]];
+        let t1 = [[settings.tx1], [settings.ty1]];
+
+        let so2_2 = [[Math.cos(settings.theta2), -Math.sin(settings.theta2)], [Math.sin(settings.theta2), Math.cos(settings.theta2)]];
+        let t2 = [[settings.tx2], [settings.ty2]];
+
 
         
 
 
-        engine.draw_debug_vector([settings.tx1,settings.ty1], [Math.cos(settings.theta1)+settings.tx1, Math.sin(settings.theta1)+settings.ty1], 0.03, 0, 0xff0000);
+        engine.draw_debug_vector([settings.tx2,settings.ty1], [Math.cos(settings.theta1)+settings.tx1, Math.sin(settings.theta1)+settings.ty1], 0.03, 0, 0xff0000);
         engine.draw_debug_vector([settings.tx1,settings.ty1], [-Math.sin(settings.theta1)+settings.tx1, Math.cos(settings.theta1)+settings.ty1], 0.03, 0, 0x00ff00);
 
-        engine.draw_debug_vector([settings.tx2,settings.ty2], [Math.cos(settings.theta2)+settings.tx2, Math.sin(settings.theta2)+settings.ty2], 0.03, 0, 0xff0055);
-        engine.draw_debug_vector([settings.tx2,settings.ty2], [-Math.sin(settings.theta2)+settings.tx2, Math.cos(settings.theta2)+settings.ty2], 0.03, 0, 0x00ff55);
+        engine.draw_debug_vector([settings.tx2,settings.ty2], [Math.cos(settings.theta2)+settings.tx2, Math.sin(settings.theta2)+settings.ty2], 0.03, 0, 0xff00aa);
+        engine.draw_debug_vector([settings.tx2,settings.ty2], [-Math.sin(settings.theta2)+settings.tx2, Math.cos(settings.theta2)+settings.ty2], 0.03, 0, 0x00ffaa);
 
     });
 </script>
