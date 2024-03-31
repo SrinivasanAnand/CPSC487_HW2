@@ -123,7 +123,7 @@
         settings.dis = dis(so2_1, t1, so2_2, t2);
         refresh_displays(gui);
 
-        engine.draw_debug_vector([settings.tx2,settings.ty1], [Math.cos(settings.theta1)+settings.tx1, Math.sin(settings.theta1)+settings.ty1], 0.03, 0, 0xff0000);
+        engine.draw_debug_vector([settings.tx1,settings.ty1], [Math.cos(settings.theta1)+settings.tx1, Math.sin(settings.theta1)+settings.ty1], 0.03, 0, 0xff0000);
         engine.draw_debug_vector([settings.tx1,settings.ty1], [-Math.sin(settings.theta1)+settings.tx1, Math.cos(settings.theta1)+settings.ty1], 0.03, 0, 0x00ff00);
 
         engine.draw_debug_vector([settings.tx2,settings.ty2], [Math.cos(settings.theta2)+settings.tx2, Math.sin(settings.theta2)+settings.ty2], 0.03, 0, 0xff00aa);
