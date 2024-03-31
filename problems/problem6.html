@@ -38,7 +38,7 @@
         theta2: 0,
         tx2: 0,
         ty2: 0,
-        dis: 0,
+        dis: 0.0,
     };
 
     let actions = {
@@ -96,6 +96,10 @@
         let multiplier = 1 / (Math.pow(p, 2) + Math.pow(q, 2));
         let a2 = multiplier*p*(m_t1[0][0]) + multiplier*q*(m_t1[1][0]);
         let a3 = -multiplier*q*(m_t1[0][0]) + multiplier*p*(m_t1[1][0]);
+
+        console.log(a1);
+        console.log(a2);
+        console.log(a3);
 
         let norm = Math.sqrt(Math.pow(a1, 2) + Math.pow(a2, 2) + Math.pow(a3, 2));
 
