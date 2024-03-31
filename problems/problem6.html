@@ -21,6 +21,7 @@
 <body>
 <script type="module">
     import {get_default_lil_gui, ThreeEngine, refresh_displays} from "../js/utils/utils_three.js";
+    import {transpose, multiply_matrix_matrix, multiply_matrix_scalar} from "../js/utils/utils_math.js";
 
     // todo: recreate this visualization, demonstrating your understanding of displacement-based distance in SE(2)
     // todo: https://yale-cpsc-487-587-internal-djrakita-c95fa6c3239a481a48d29a6b0fd.gitlab.io/html/visualizations/SE2_distance2.html
@@ -80,15 +81,15 @@
     }
 
     function dis(so2_1, t1, so2_2, t2){
-        // using Math library functions here for matrix
+        // using math_utils library functions here for matrix
         // operations instead of hard coding matrix multiplication
         // as I have done in the previous problems
 
-        let m_transpose = Math.transpose(so2_1);
-        let m_t1 = Math.multiply_matrix_matrix(m_transpose, Math.multiply_matrix_scalar(t1, -1));
+        let m_transpose = transpose(so2_1);
+        let m_t1 = multiply_matrix_matrix(m_transpose, multiply_matrix_scalar(t1, -1));
 
-        let disp_so2 = Math.multiply_matrix_matrix(m_transpose, so2_2);
-        let disp_t = Math.multiply_matrix_matrix(m_transpose, t2);
+        let disp_so2 = multiply_matrix_matrix(m_transpose, so2_2);
+        let disp_t = multiply_matrix_matrix(m_transpose, t2);
         disp_t[0][0] += m_t1[0][0];
         disp_t[1][1] += m_t1[1][1];
 
