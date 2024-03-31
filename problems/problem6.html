@@ -37,7 +37,7 @@
         theta2: 0,
         tx2: 0,
         ty2: 0,
-
+        dis: 0,
     };
 
     let actions = {
@@ -80,6 +80,36 @@
     }
 
     function dis(so2_1, t1, so2_2, t2){
+        // using Math library functions here for matrix
+        // operations instead of hard coding matrix multiplication
+        // as I have done in the previous problems
+
+        let m_transpose = Math.transpose(so2_1);
+        let m_t1 = Math.multiply_matrix_matrix(m_transpose, Math.multiply_matrix_scalar(t1, -1));
+
+        let disp_so2 = Math.multiply_matrix_matrix(m_transpose, so2_2);
+        let disp_t = Math.multiply_matrix_matrix(m_transpose, t2);
+        disp_t[0][0] += m_t1[0][0];
+        disp_t[1][1] += m_t1[1][1];
+
+        let a1 = Math.atan2(disp_so2[1][0], disp_so2[0][0]);
+
+        let p = 0.0;
+        let q = 0.0;
+        if (a1 < 0.0001){
+            p = 1 - Math.pow(a1, 2) / 6.0 + Math.pow(a1, 4) / 120.0;
+            q = a1/2.0 - Math.pow(a1, 3) / 24.0 + Math.pow(a1, 5) / 720.0;
+        }
+        else {
+            p = Math.sin(a1)/a1;
+            q = (1 - Math.cos(a1))/a1;
+        }
+
+        let multiplier = 1 / (Math.pow(p, 2) + Math.pow(q, 2));
+        let a2 = multiplier*p*(m_t1[0][0]) + multiplier*q*(m_t1[1][0]);
+        let a3 = -multiplier*q*(m_t1[0][0]) + multiplier*p*(m_t1[1][0]);
+
+        let norm = Math.sqrt(Math.pow(a1, 2) + Math.pow(a2, 2) + Math.pow(a3, 2));
 
     }
 
@@ -90,9 +120,8 @@
         let so2_2 = [[Math.cos(settings.theta2), -Math.sin(settings.theta2)], [Math.sin(settings.theta2), Math.cos(settings.theta2)]];
         let t2 = [[settings.tx2], [settings.ty2]];
 
-
-        
-
+        settings.dis = dis(so2_1, t1, so2_2, t2);
+        refresh_displays(gui);
 
         engine.draw_debug_vector([settings.tx2,settings.ty1], [Math.cos(settings.theta1)+settings.tx1, Math.sin(settings.theta1)+settings.ty1], 0.03, 0, 0xff0000);
         engine.draw_debug_vector([settings.tx1,settings.ty1], [-Math.sin(settings.theta1)+settings.tx1, Math.cos(settings.theta1)+settings.ty1], 0.03, 0, 0x00ff00);
