@@ -20,13 +20,101 @@
 </head>
 <body>
 <script type="module">
-    import {ThreeEngine} from "../js/utils/utils_three.js";
+    import {get_default_lil_gui, ThreeEngine, refresh_displays} from "../js/utils/utils_three.js";
 
     // todo: recreate this visualization, demonstrating your understanding of displacement-based distance in SE(2)
     // todo: https://yale-cpsc-487-587-internal-djrakita-c95fa6c3239a481a48d29a6b0fd.gitlab.io/html/visualizations/SE2_distance2.html
     // todo: make sure you are using the displacement-based distance!
     // todo: or, feel free to come up with any visualization here that demonstrates your understanding of SE(2) distance
 
+    let engine = ThreeEngine.new_default_2d();
+
+
+    let settings = {
+        theta1: 0,
+        tx1: 0,
+        ty1: 0,
+        theta2: 0,
+        tx2: 0,
+        ty2: 0,
+
+    };
+
+    let actions = {
+        reset1: function() {
+            settings.theta1 = 0;
+            settings.tx1 = 0;
+            settings.ty1 = 0;
+            refresh_displays(gui);
+        },
+        reset2: function() {
+            settings.theta2 = 0;
+            settings.tx2 = 0;
+            settings.ty2 = 0;
+            refresh_displays(gui);
+        }
+    }
+
+    let gui = get_default_lil_gui();
+    gui.add(settings, 'theta1').name('Theta1');
+    gui.add(settings, 'tx1').name('tx1');
+    gui.add(settings, 'ty1').name('ty1');
+    folder.add(actions, 'reset1').name('Reset1');
+    gui.add(settings, 'theta2').name('Theta2');
+    gui.add(settings, 'tx2').name('tx2');
+    gui.add(settings, 'ty2').name('ty2');
+    folder.add(actions, 'reset2').name('Reset2');
+
+
+    function se2_transformation(so2, translation, point) {
+        let result = [[0.],[0.]];
+        so2.forEach(function(row, index) {
+            let sum = 0;
+            row.forEach(function(value, row_index){
+                sum += value * point[row_index][0]
+            })
+            sum += translation[index];
+            result[index][0] = sum;
+        });
+        return result;
+    }
+
+    engine.animation_loop(function() {
+        let so2 = [[Math.cos(settings.theta), -Math.sin(settings.theta)], [Math.sin(settings.theta), Math.cos(settings.theta)]];
+
+        let new_points = points.map(point => se2_transformation(so2, [settings.t_x, settings.t_y], point));
+        let new_wireframe = wireframe.map(point => se2_transformation(so2, [settings.t_x, settings.t_y], point));
+
+        engine.update_vertex_positions_of_mesh_object(0, new_points);
+        engine.update_vertex_positions_of_mesh_object_wireframe(0, new_wireframe);
+
+        if (settings.show_points){
+            new_points.forEach(point => {
+                engine.draw_debug_sphere(point, settings.point_size, 0xA52A2A)
+            });
+        }
+        
+        if (settings.show_wireframe){
+            engine.set_mesh_object_wireframe_visibility(0, true);
+        }
+        else {
+            engine.set_mesh_object_wireframe_visibility(0, false);
+        }
+
+        if (settings.show_mesh){
+            engine.mesh_objects[0].visible = true;
+        }
+        else{
+            engine.mesh_objects[0].visible = false;
+        }
+
+        engine.draw_debug_vector([settings.tx1,settings.ty1], [Math.cos(settings.theta1), Math.sin(settings.theta1)], 0.03, 0, 0xff0000);
+        engine.draw_debug_vector([settings.tx1,settings.ty1], [-Math.sin(settings.theta1), Math.cos(settings.theta1)], 0.03, 0, 0x00ff00);
+
+        engine.draw_debug_vector([settings.tx2,settings.ty2], [Math.cos(settings.theta2), Math.sin(settings.theta2)], 0.03, 0, 0xff0055);
+        engine.draw_debug_vector([settings.tx2,settings.ty2], [-Math.sin(settings.theta2), Math.cos(settings.theta2)], 0.03, 0, 0x00ff55);
+
+    });
 </script>
 </body>
 </html>
