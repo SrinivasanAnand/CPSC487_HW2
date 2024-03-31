@@ -81,6 +81,29 @@
 
         engine.update_vertex_positions_of_mesh_object(0, new_points);
         engine.update_vertex_positions_of_mesh_object_wireframe(0, new_wireframe);
+
+        if (settings.show_points){
+            new_points.forEach(point => {
+                engine.draw_debug_sphere(point, settings.point_size, 0xA52A2A)
+            });
+        }
+        
+        if (settings.show_wireframe){
+            engine.set_mesh_object_wireframe_visibility(0, true);
+        }
+        else {
+            engine.set_mesh_object_wireframe_visibility(0, false);
+        }
+
+        if (settings.show_mesh){
+            enginge.mesh_objects[0].visible = true;
+        }
+        else{
+            enginge.mesh_objects[0].visible = false;
+        }
+
+        enginge.draw_debug_vector([0,0], [Math.cos(settings.theta), Math.sin(settings.theta)], 0.05, 0, 0xff0000);
+        enginge.draw_debug_vector([0,0], [-Math.sin(settings.theta), Math.cos(settings.theta)], 0.05, 0, 0xff0000);
     });
 </script>
 </body>
